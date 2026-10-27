@@ -85,73 +85,7 @@ Para fabricar un cable se utiliza una herramienta llamada crimpadora, que fija e
 
 Existen dos normas principales que establecen el orden de los ocho hilos dentro del conector.
 
-Norma T568A
-
-### 1
-
-Blanco/verde
-
-### 2
-
-Verde
-
-### 3
-
-Blanco/naranja
-
-### 4
-
-Azul
-
-### 5
-
-Blanco/azul
-
-### 6
-
-Naranja
-
-### 7
-
-Blanco/marrón
-
-### 8
-
-Marrón
-
-Norma T568B
-
-### 1
-
-Blanco/naranja
-
-### 2
-
-Naranja
-
-### 3
-
-Blanco/verde
-
-### 4
-
-Azul
-
-### 5
-
-Blanco/azul
-
-### 6
-
-Verde
-
-### 7
-
-Blanco/marrón
-
-### 8
-
-Marrón
+![alt text](utp_coleres.png)
 
 Las dos normas son válidas. Lo importante es respetar el orden de los hilos y utilizar un criterio coherente en la instalación.
 
