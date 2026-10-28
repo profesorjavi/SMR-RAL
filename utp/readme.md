@@ -128,6 +128,7 @@ En instalaciones estructuradas, el enlace permanente de cableado suele tener un 
 | Flexible y sencillo de mantener. | El cable de cobre puede dañarse físicamente.                  |
 | Adecuado para redes Ethernet.    | Los modelos apantallados requieren una instalación apropiada. |
 
+
 ## 9. Resumen
 
 - El par trenzado transmite datos mediante señales eléctricas por hilos de cobre.
