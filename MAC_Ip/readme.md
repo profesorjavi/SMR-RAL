@@ -3,6 +3,7 @@
 
 ## Índice
 
+0. [Binario](binario.md)
 1. [La idea general: el cartero de la red](#1-la-idea-general-el-cartero-de-la-red)
 2. [Dirección MAC](#2-dirección-mac)
 3. [Dirección IP](#3-dirección-ip)
