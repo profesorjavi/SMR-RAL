@@ -1,17 +1,30 @@
 ### MAC · IP · Subnetting · ARP · ICMP
 
 
+## Índice 
+
+Actualiza la sección del índice con este contenido:
+
+```markdown
 ## Índice
 
 0. [Binario](binario.md)
+
 1. [La idea general: el cartero de la red](#1-la-idea-general-el-cartero-de-la-red)
 2. [Dirección MAC](#2-dirección-mac)
 3. [Dirección IP](#3-dirección-ip)
+   - [CIDR](#cidr)
+   - [IPs privadas](#ips-privadas)
+   - [Direcciones especiales](#direcciones-especiales)
+   - [Cómo saber a qué clase pertenece una IP](#como-saber-a-que-clase-pertenece-una-ip)
+   - [Cómo saber si una IP es pública o privada](#como-se-sabe-si-una-ip-es-pública-o-privada)
+   - [Parte de red y parte de hosts](#como-saber-la-parte-de-una-ip-que-corresponde-a-una-red-y-la-que-corresponde-a-los-hosts)
 4. [Subnetting](#4-subnetting)
 5. [Protocolo ARP](#5-protocolo-arp)
 6. [Protocolo ICMP](#6-protocolo-icmp)
 7. [Chuleta final](#7-chuleta-final)
 8. [Ejercicios y soluciones](#8-ejercicios-y-soluciones)
+```
 
 ---
 
