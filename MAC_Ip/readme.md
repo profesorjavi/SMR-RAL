@@ -111,7 +111,62 @@ Máscara:  255.255.255.0   =  /24
 
 Es la **IP del router**, la "puerta de salida" hacia otras redes. Si no está bien puesta, tendrás red local pero **no Internet**.
 
-### IPs públicas y privadas
+### IPs
+
+Una **dirección IP** es un número que identifica a un dispositivo dentro de una red y permite que otros dispositivos sepan dónde enviarle información. Puede ser **pública** o **privada**.
+
+
+Las direcciones IPv4 se dividían históricamente en clases según el primer octeto:
+
+| Clase | Primer octeto | Máscara predeterminada | Uso |
+|---|---:|---:|---|
+| A | 1–126 | `/8` o `255.0.0.0` | Redes muy grandes |
+| B | 128–191 | `/16` o `255.255.0.0` | Redes medianas o grandes |
+| C | 192–223 | `/24` o `255.255.255.0` | Redes pequeñas |
+| D | 224–239 | — | Multicast |
+| E | 240–255 | — | Experimental |
+
+Ejemplos:
+
+- **Clase A:** `10.20.30.40/8`
+- **Clase B:** `172.20.30.40/16`
+- **Clase C:** `192.168.1.40/24`
+
+Hoy apenas se usa esta clasificación para direccionar redes: se utiliza principalmente **CIDR** y **subnetting**, con máscaras como `/20` o `/26`.
+
+La dirección `127.0.0.1` pertenece a la red de **loopback** o “yo mismo”. Las direcciones privadas son:
+
+| Rango privado | Máscara |
+|---|---|
+| `10.0.0.0 – 10.255.255.255` | `/8` |
+| `172.16.0.0 – 172.31.255.255` | `/12` |
+| `192.168.0.0 – 192.168.255.255` | `/16` |
+
+Las direcciones privadas no pueden salir directamente a Internet. El router las convierte mediante **NAT**.
+
+
+#### CIDR
+**CIDR** significa *Classless Inter-Domain Routing* (enrutamiento interdominio sin clases).
+
+Indica cuántos de los 32 bits forman la parte de red mediante un número precedido por una barra:
+
+```text
+192.168.10.15/24
+```
+
+- `/24` indica que los primeros 24 bits forman la red.
+- Los 8 bits restantes identifican los equipos.
+- Su máscara es `255.255.255.0`.
+- La red comienza en `192.168.10.0`.
+- Las direcciones utilizables van de `192.168.10.1` a `192.168.10.254`.
+- `192.168.10.255` es la dirección de broadcast.
+
+CIDR permite crear redes de cualquier tamaño sin depender de las antiguas clases A, B y C. Por ejemplo, `/26` proporciona 64 direcciones: 62 utilizables por equipos. Es muy utilizado en subnetting y en las tablas de enrutamiento de Internet.
+
+
+#### IPs privadas
+
+Solo identifican dispositivos dentro de una red local. Pueden repetirse en diferentes redes sin conflicto.
 
 | Rango privado | Máscara | Uso típico |
 |---|---|---|
@@ -132,6 +187,118 @@ Las privadas **no salen a Internet tal cual**: el router las "traduce" con **NAT
 > 🧠 **IPv6** existe porque las IPv4 se acaban (32 bits dan "solo" unos 4.300 millones). Tiene 128 bits y se escribe en hexadecimal, por ejemplo `2001:db8::1`. Lo verás con más calma más adelante.
 
 ---
+
+## Como saber a que clase pertenece una IP
+Para clasificar una IP IPv4, mira el **primer octeto**:
+
+| Clase | Primer octeto | Máscara por defecto |
+|---|---:|---:|
+| A | 1–126 | `/8` |
+| B | 128–191 | `/16` |
+| C | 192–223 | `/24` |
+| D | 224–239 | Multicast |
+| E | 240–255 | Reservada |
+
+Ejemplos:
+
+- `10.20.30.40` → **Clase A**, porque empieza por 10.
+- `172.20.30.40` → **Clase B**, porque empieza por 172.
+- `192.168.1.40` → **Clase C**, porque empieza por 192.
+
+Casos especiales:
+
+- `127.0.0.1` → **loopback**, no pertenece a una clase normal.
+- `0.0.0.0` → no representa una IP asignada.
+- `169.254.1.1` → APIPA, no tiene asignación DHCP.
+
+En la clasificación original se observan los primeros bits:
+
+- `0` → Clase A
+- `10` → Clase B
+- `110` → Clase C
+- `1110` → Clase D
+- `1111` → Clase E
+
+## Como se sabe si una IP es pública o privada?
+Comprueba si la dirección está dentro de los tres rangos privados:
+
+| Tipo | Rango |
+|---|---|
+| Privada | `10.0.0.0 – 10.255.255.255` |
+| Privada | `172.16.0.0 – 172.31.255.255` |
+| Privada | `192.168.0.0 – 192.168.255.255` |
+
+Si pertenece a uno de esos rangos, es **privada**. En caso contrario, normalmente es **pública**.
+
+Ejemplos:
+
+- `10.5.20.1` → privada
+- `172.20.10.5` → privada
+- `172.32.10.5` → pública
+- `192.168.1.10` → privada
+- `8.8.8.8` → pública
+
+También existen direcciones especiales que no son públicas ni privadas, como:
+
+- `127.0.0.1`: loopback
+- `169.254.x.x`: APIPA
+- `0.0.0.0`: sin dirección asignada
+- `224.0.0.0 – 239.255.255.255`: multicast
+- `240.0.0.0 – 255.255.255.255`: reservado
+
+Importante: **pertenecer a una clase no determina si una IP es pública o privada**. Por ejemplo, `10.0.0.1` es Clase A y privada, mientras que `8.8.8.8` también es Clase A y pública.
+
+## Como saber la parte de una IP que corresponde a una red y la que corresponde a los hosts
+Para separarlas, utiliza la **máscara de subred**:
+
+- Los bits que valen `1` en la máscara corresponden a la **parte de red**.
+- Los bits que valen `0` corresponden a la **parte de host**.
+
+### Ejemplo: `192.168.1.10/24`
+
+```text
+IP:      11000000.10101000.00000001.00001010
+Máscara: 11111111.11111111.11111111.00000000
+Red:     11000000.10101000.00000001.00000000
+```
+
+Por tanto:
+
+- Parte de red: `192.168.1`
+- Parte de host: `.10`
+- Dirección de red: `192.168.1.0`
+- Dirección de broadcast: `192.168.1.255`
+
+El prefijo `/24` indica que los **24 primeros bits** son de red y los **8 últimos** son de host.
+
+### Método rápido
+
+La parte de red incluye los octetos completos determinados por la máscara:
+
+| Prefijo | Máscara | Red | Host |
+|---|---|---|---|
+| `/8` | `255.0.0.0` | Primer octeto | Últimos 3 |
+| `/16` | `255.255.0.0` | Primeros 2 | Últimos 2 |
+| `/24` | `255.255.255.0` | Primeros 3 | Último |
+| `/25` | `255.255.255.128` | Primeros 3 + 1 bit | 7 bits |
+
+Cuando la máscara no cae al final de un octeto, hay que calcular el resultado mediante una operación **AND**:
+
+```text
+Dirección de red = IP AND máscara
+```
+
+Ejemplo:
+
+```text
+IP:      192.168.1.130
+Máscara: 255.255.255.192
+AND:     192.168.1.128
+```
+
+Por tanto, `192.168.1.128` es la dirección de red y `130` es un host dentro de ella.
+
+
 
 ## 4. Subnetting
 
