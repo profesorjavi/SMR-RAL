@@ -1,5 +1,5 @@
 # Redes de área local
 
 
-[UTP](utp/readme.md)
-[MAC y Ip](MAC_Ip/readme.md)
+1. [UTP](utp/readme.md)
+2. [MAC y Ip](MAC_Ip/readme.md)
